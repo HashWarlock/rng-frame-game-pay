@@ -88,16 +88,20 @@ contract VerifyAll is Script {
             deployedBytecode.length - compiledBytecode.length
         );
 
-        string[] memory inputs = new string[](9);
+        string[] memory inputs = new string[](13);
         inputs[0] = "forge";
         inputs[1] = "verify-contract";
         inputs[2] = vm.toString(contractAddr);
         inputs[3] = contractName;
-        inputs[4] = "--chain";
-        inputs[5] = vm.toString(block.chainid);
+        inputs[4] = "--verifier-url";
+        inputs[5] = "https://base-sepolia.blockscout.com/api?";//vm.toString(block.chainid);
         inputs[6] = "--constructor-args";
         inputs[7] = vm.toString(constructorArgs);
         inputs[8] = "--watch";
+        inputs[9] = "--verifier";
+        inputs[10] = "blockscout";
+        inputs[11] = "--compiler-version";
+        inputs[12] = "0.8.21+commit.d9974bed";
 
         FfiResult memory f = tempVm(address(vm)).tryFfi(inputs);
 

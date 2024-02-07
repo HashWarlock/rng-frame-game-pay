@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/YourContract.sol";
+import "../contracts/RNGFrameGamePayForwarder.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
@@ -15,8 +15,8 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        YourContract yourContract = new YourContract(
-            vm.addr(deployerPrivateKey)
+        RNGFrameGamePayForwarder yourContract = new RNGFrameGamePayForwarder(
+            payable(0x492ceca6345bFA1d92E2fB95e69D3Ece4AA780d9)
         );
         console.logString(
             string.concat(
