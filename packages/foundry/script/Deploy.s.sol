@@ -2,6 +2,7 @@
 pragma solidity ^0.8.19;
 
 import "../contracts/RNGFrameGamePayForwarder.sol";
+import "../contracts/TestToken.sol";
 import "./DeployHelpers.s.sol";
 
 contract DeployScript is ScaffoldETHDeploy {
@@ -15,8 +16,17 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
+        TestToken testToken = new TestToken();
+        console.logString(
+            string.concat(
+                "TestToken deployed at: ",
+                vm.toString(address(testToken))
+            )
+        );
+
         RNGFrameGamePayForwarder yourContract = new RNGFrameGamePayForwarder(
-            payable(0x492ceca6345bFA1d92E2fB95e69D3Ece4AA780d9)
+            payable(0x5b73bA6277A5122dcc415F32Bdcf25377D0fe1F4),//0xeD9AC573FdCEa785ED254E38306899952e180Af3),
+            address(testToken)//0x036CbD53842c5426634e7929541eC2318f3dCF7e
         );
         console.logString(
             string.concat(

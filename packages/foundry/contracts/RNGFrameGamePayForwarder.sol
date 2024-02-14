@@ -1,10 +1,14 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.20;
 import "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
+import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
 contract RNGFrameGamePayForwarder is Ownable {
     address payable public forwarder;
+    IERC20 public immutable tokenAddress;
 
+    // Event to emit ERC20 payment forwarded
+    event ERC20PaymentForwarded(address indexed sender, address indexed recipient, IERC20 token, uint256 amount);
     // Event to emit when a payment is forwarded
     event PaymentForwarded(address indexed sender, address indexed recipient, uint256 amount);
     // Event to emit when the owner is changed
@@ -19,8 +23,9 @@ contract RNGFrameGamePayForwarder is Ownable {
     }
 
     // Constructor to set the initial forwarder of the contract
-    constructor(address payable _forwarder) Ownable(msg.sender) {
+    constructor(address payable _forwarder, address _tokenAddress) Ownable(msg.sender) {
         forwarder = _forwarder;
+        tokenAddress = IERC20(_tokenAddress);
     }
 
     // Function to change the forwarder of the contract
@@ -33,6 +38,15 @@ contract RNGFrameGamePayForwarder is Ownable {
     // Fallback function to receive ETH
     receive() external payable {
         // Optionally, you can add logic here if you want to perform any actions when receiving ETH
+    }
+
+    function receiveERC20Token(uint256 _amount) public {
+        require(IERC20(tokenAddress).transferFrom(msg.sender, address(this), _amount), "Transfer Failed");
+    }
+
+    function forwardERC20Token(address payable recipient, uint256 amount) external onlyForwarder {
+        IERC20(tokenAddress).transfer(msg.sender, IERC20(tokenAddress).balanceOf(address(this)));
+        emit ERC20PaymentForwarded(msg.sender, recipient, tokenAddress, amount);
     }
 
     // Function to forward the received ETH to a specified address
