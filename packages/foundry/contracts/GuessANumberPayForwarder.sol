@@ -3,7 +3,7 @@ pragma solidity ^0.8.20;
 import "../lib/openzeppelin-contracts/contracts/access/Ownable.sol";
 import "../lib/openzeppelin-contracts/contracts/token/ERC20/IERC20.sol";
 
-contract RNGFrameGamePayForwarder is Ownable {
+contract GuessANumberPayForwarder is Ownable {
     address payable public forwarder;
     IERC20 public immutable tokenAddress;
 
@@ -40,7 +40,7 @@ contract RNGFrameGamePayForwarder is Ownable {
         // Optionally, you can add logic here if you want to perform any actions when receiving ETH
     }
 
-    function receiveERC20Token(uint256 _amount) public {
+    function receiveERC20Token(uint256 _amount) external {
         require(IERC20(tokenAddress).transferFrom(msg.sender, address(this), _amount), "Transfer Failed");
     }
 

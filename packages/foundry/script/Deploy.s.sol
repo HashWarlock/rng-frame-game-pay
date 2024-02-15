@@ -1,7 +1,7 @@
 //SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "../contracts/RNGFrameGamePayForwarder.sol";
+import "../contracts/GuessANumberPayForwarder.sol";
 import "../contracts/TestToken.sol";
 import "./DeployHelpers.s.sol";
 
@@ -16,17 +16,17 @@ contract DeployScript is ScaffoldETHDeploy {
             );
         }
         vm.startBroadcast(deployerPrivateKey);
-        TestToken testToken = new TestToken();
-        console.logString(
-            string.concat(
-                "TestToken deployed at: ",
-                vm.toString(address(testToken))
-            )
-        );
+//        TestToken testToken = new TestToken();
+//        console.logString(
+//            string.concat(
+//                "TestToken deployed at: ",
+//                vm.toString(address(testToken))
+//            )
+//        );
 
-        RNGFrameGamePayForwarder yourContract = new RNGFrameGamePayForwarder(
-            payable(0x5b73bA6277A5122dcc415F32Bdcf25377D0fe1F4),//0xeD9AC573FdCEa785ED254E38306899952e180Af3),
-            address(testToken)//0x036CbD53842c5426634e7929541eC2318f3dCF7e
+        GuessANumberPayForwarder yourContract = new GuessANumberPayForwarder(
+            payable(0x3217270ff5d11B3865C402FB49f8F77dC433c5f9),
+            0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913
         );
         console.logString(
             string.concat(
